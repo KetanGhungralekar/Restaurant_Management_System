@@ -53,6 +53,9 @@ We extend our gratitude to our professors and mentors for their guidance through
 ## Authors
 
 - **Ketan Ghungralekar**
+- **Abhinav Kumar**
+- **Pratham Chawdhry**
+- **Soma Datta**
 
 ## Installation
 
