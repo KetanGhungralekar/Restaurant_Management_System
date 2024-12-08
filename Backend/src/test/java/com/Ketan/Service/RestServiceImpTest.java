@@ -30,7 +30,10 @@ class RestServiceImpTest {
     public RestServiceImpTest() {
         MockitoAnnotations.openMocks(this);
     }
-
+    /*
+     * we now test restaurant creation usinh junit and mockito 
+     * we create restaurent with mock data and see if it secessfully created or not
+     */
     @Test
     void testCreateRestaurant() {
         // Arrange: Mock input data
