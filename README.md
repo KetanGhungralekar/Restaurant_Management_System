@@ -62,7 +62,7 @@ We extend our gratitude to our professors and mentors for their guidance through
 ### Clone the Repository
 
 ```bash
-git clone "https://github.com/KetanGhungralekar/FeastFinder-Hub.git"
+git clone "https://github.com/KetanGhungralekar/Restaurant_Management_System.git"
 ```
 ## For Frontend
 ```bash
