@@ -1,0 +1,64 @@
+/* Fade-In Animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Slide-Up Animation */
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Banner Fade-In */
+.banner {
+    background-image: url(https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=600);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 90vh;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Cover Fade-In */
+.cover {
+    width: 100%;
+    height: 90vh;
+    background-color: black;
+    opacity: 0.4;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Section Fade-In */
+.fade-in {
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Slide-Up Animation for Content */
+.fade-in-up {
+    animation: slideUp 1s ease-in-out;
+}
+
+/* Card or Item Fade-In Effect */
+.fade-in-up {
+    animation: slideUp 1s ease-in-out forwards;
+}
+
+/* Optional: Adding a smooth transition for text when scrolling */
+.banner-text {
+    animation: fadeIn 2s ease-out;
+}
+
+.fadout {
+    animation: fadeIn 2s ease-out;
+}
