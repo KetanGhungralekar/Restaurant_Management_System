@@ -35,6 +35,7 @@ public class FoodServiceImpl implements FoodService{
         Food savedfood = foodrepo.save(food); //do we need to save restaurant again? //yes
         //because restaurant is updated with new food
         //so in database it will be updated only when we save it
+        restaurantRepository.save(restaurant);
         return savedfood;
     }
 
