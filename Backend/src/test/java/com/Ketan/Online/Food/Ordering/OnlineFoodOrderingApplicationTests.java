@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class OnlineFoodOrderingApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void contextLoads() { //contextloads
 	}
 
 }
+
