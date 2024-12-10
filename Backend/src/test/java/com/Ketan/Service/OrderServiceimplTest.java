@@ -18,27 +18,26 @@ import static org.mockito.Mockito.*;
 
 
 class OrderServiceImplTest {
+    @Mock
+    private OrderItemRepo orderItemRepo;
 
     @InjectMocks
     private OrderServiceimpl orderService; // Use the real implementation
 
     @Mock
-    private AddressRepo addressRepo;
+    private OrderRepo orderRepo;
 
     @Mock
-    private UserRepository userRepository;
+    private AddressRepo addressRepo;
 
     @Mock
     private RestaurantService restaurantService;
 
     @Mock
+    private UserRepository userRepository;
+
+    @Mock
     private CartService cartService;
-
-    @Mock
-    private OrderItemRepo orderItemRepo;
-
-    @Mock
-    private OrderRepo orderRepo;
 
     public OrderServiceImplTest() {
         MockitoAnnotations.openMocks(this);
@@ -54,55 +53,55 @@ class OrderServiceImplTest {
         // Arrange: Mock input data
         CreateOrderreq orderReq = new CreateOrderreq();
         Address address = new Address();
-        address.setId(1L);
-        address.setStreetAddress("Test Street");
-        address.setCity("Test City");
-        orderReq.setDeliveryAddress(address);
         orderReq.setRestaurantid(1L);
+        orderReq.setDeliveryAddress(address);
+        address.setCity("Test City");
+        address.setStreetAddress("Test Street");
+        address.setId(1L);
 
         User user = new User();
-        user.setId(1L);
         user.setAddresses(new ArrayList<>());
+        user.setId(1L);
 
         Restaurant restaurant = new Restaurant();
-        restaurant.setId(1L);
         restaurant.setOrders(new ArrayList<>());
+        restaurant.setId(1L);
 
         Cart cart = new Cart();
-        cart.setCustomer(user);
         cart.setCartItems(new ArrayList<>());
         cart.setTotalPrice(500L);
+        cart.setCustomer(user);
 
         CartItems cartItem = new CartItems();
-        Food food = new Food();
-        food.setName("Pizza");
-        food.setPrice(250L);
-        cartItem.setFood(food);
-        cartItem.setQuantity(2L);
         cartItem.setTotaPrice(500L);
+        cartItem.setQuantity(2L);
+        Food food = new Food();
+        cartItem.setFood(food);
+        food.setPrice(250L);
+        food.setName("Pizza");
         ArrayList<String> ingredients = new ArrayList<>();
-        ingredients.add("Cheese");
         ingredients.add("Tomato");
-        cartItem.setIngredients(ingredients);
+        ingredients.add("Cheese");
         cart.getCartItems().add(cartItem);
+        cartItem.setIngredients(ingredients);
 
         OrderItem orderItem = new OrderItem();
-        orderItem.setFood(cartItem.getFood());
+        orderItem.setIngredients(cartItem.getIngredients());
         orderItem.setQuantity(cartItem.getQuantity());
         orderItem.setTotalPrice(cartItem.getTotaPrice());
-        orderItem.setIngredients(cartItem.getIngredients());
+        orderItem.setFood(cartItem.getFood());
 
         Order expectedOrder = new Order();
-        expectedOrder.setId(1L);
-        expectedOrder.setDeliveryaddress(address);
         expectedOrder.setCustomer(user);
-        expectedOrder.setRestaurant(restaurant);
         expectedOrder.setTotalPrice(500L);
         expectedOrder.setStatus("PENDING");
+        expectedOrder.setDeliveryaddress(address);
+        expectedOrder.setRestaurant(restaurant);
+        expectedOrder.setId(1L);
 
         // Mock behaviors
-        when(addressRepo.save(address)).thenReturn(address);
         when(userRepository.save(user)).thenReturn(user);
+        when(addressRepo.save(address)).thenReturn(address);
         try{
             when(restaurantService.getRestaurant(orderReq.getRestaurantid())).thenReturn(restaurant);
             when(cartService.getCartByUser(user.getId())).thenReturn(cart);
@@ -110,8 +109,8 @@ class OrderServiceImplTest {
         catch(Exception e){
             fail("Exception thrown: " + e.getMessage());
         }
-        when(orderItemRepo.save(any(OrderItem.class))).thenReturn(orderItem);
         when(orderRepo.save(any(Order.class))).thenReturn(expectedOrder);
+        when(orderItemRepo.save(any(OrderItem.class))).thenReturn(orderItem);
 
         // Act: Call the method
         Order result = null;
@@ -125,16 +124,16 @@ class OrderServiceImplTest {
 
         // Assert: Validate the result
         assertNotNull(result);
-        assertEquals(1L, result.getId());
-        assertEquals(address, result.getDeliveryaddress());
-        assertEquals(user, result.getCustomer());
-        assertEquals(restaurant, result.getRestaurant());
-        assertEquals(500L, result.getTotalPrice());
         assertEquals("PENDING", result.getStatus());
+        assertEquals(user, result.getCustomer());
+        assertEquals(address, result.getDeliveryaddress());
+        assertEquals(500L, result.getTotalPrice());
+        assertEquals(1L, result.getId());
+        assertEquals(restaurant, result.getRestaurant());
 
         // Verify interactions
-        verify(addressRepo, times(1)).save(address);
         verify(userRepository, times(1)).save(user);
+        verify(addressRepo, times(1)).save(address);
         try{
             verify(restaurantService, times(1)).getRestaurant(orderReq.getRestaurantid());
             verify(cartService, times(1)).getCartByUser(user.getId());
@@ -142,8 +141,8 @@ class OrderServiceImplTest {
         catch(Exception e){
             System.out.println("Exception thrown: " + e.getMessage());
         }
-        verify(orderItemRepo, times(1)).save(any(OrderItem.class));
         verify(orderRepo, times(1)).save(any(Order.class));
+        verify(orderItemRepo, times(1)).save(any(OrderItem.class));
     }
 }
  
