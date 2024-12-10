@@ -39,37 +39,43 @@ class RestServiceImpTest {
         // Arrange: Mock input data
         CreateRestaurantreq req = new CreateRestaurantreq();
         Address address = new Address();
-        address.setStreetAddress("123 Test Street");
-        address.setCity("Test City");
-        address.setPincode("123456");
+
+        // Set Address fields
+        address.setPincode("282002");
+        address.setCity("Agra");
+        address.setStreetAddress("123 Address Street");
+
+        // Set request fields
+        req.setName("Shah Jahan Restaurant");
+        req.setDescription("A cozy Indian restaurant");
+        req.setOpeningTime("10:00 AM");
+        req.setCuisineType("Indian");
         req.setAddress(address);
-        req.setCuisineType("Italian");
-        req.setDescription("A cozy Italian restaurant");
-        req.setName("Test Restaurant");
-        req.setOpeningTime("9:00 AM - 10:00 PM");
 
         User user = new User();
         user.setId(1L);
-        user.setFullname("Test User");
+        user.setFullname("Shah Jahan");
 
+        // Mock the saved Address
         Address savedAddress = new Address();
+        savedAddress.setPincode("282002");
+        savedAddress.setStreetAddress("123 Address Street");
+        savedAddress.setCity("Agra");
         savedAddress.setId(1L);
-        savedAddress.setStreetAddress("123 Test Street");
-        savedAddress.setCity("Test City");
-        savedAddress.setPincode("123456");
 
+        // Mock the saved Restaurant
         Restaurant savedRestaurant = new Restaurant();
         savedRestaurant.setId(1L);
-        savedRestaurant.setAddress(savedAddress);
-        savedRestaurant.setContactInformation(req.getContactInformation());
-        savedRestaurant.setCuisineType(req.getCuisineType());
-        savedRestaurant.setDescription(req.getDescription());
         savedRestaurant.setName(req.getName());
+        savedRestaurant.setDescription(req.getDescription());
+        savedRestaurant.setCuisineType(req.getCuisineType());
         savedRestaurant.setOpening_hours(req.getOpeningTime());
-        savedRestaurant.setImages(req.getImages());
-        savedRestaurant.setRegistrationdate(LocalDateTime.now());
+        savedRestaurant.setAddress(savedAddress);
         savedRestaurant.setOwner(user);
         savedRestaurant.setOpen(true);
+        savedRestaurant.setRegistrationdate(LocalDateTime.now());
+        savedRestaurant.setContactInformation(req.getContactInformation());
+        savedRestaurant.setImages(req.getImages());
 
         // Mock repository behaviors
         when(addressRepo.save(any(Address.class))).thenReturn(savedAddress);
@@ -79,17 +85,18 @@ class RestServiceImpTest {
         Restaurant result = restaurantService.CreateRestaurant(req, user);
 
         // Assert: Validate the result
-        assertNotNull(result);
-        assertEquals(savedRestaurant.getId(), result.getId());
         assertEquals(req.getName(), result.getName());
-        assertEquals(req.getCuisineType(), result.getCuisineType());
-        assertEquals(req.getDescription(), result.getDescription());
-        assertEquals(savedAddress, result.getAddress());
-        assertEquals(user, result.getOwner());
+        assertNotNull(result);
         assertTrue(result.isOpen());
+        assertEquals(user, result.getOwner());
+        assertEquals(req.getDescription(), result.getDescription());
+        assertEquals(savedRestaurant.getId(), result.getId());
+        assertEquals(req.getCuisineType(), result.getCuisineType());
+        assertEquals(savedAddress, result.getAddress());
 
         // Verify interactions with mocked dependencies
         verify(addressRepo, times(1)).save(any(Address.class));
         verify(restaurantRepository, times(1)).save(any(Restaurant.class));
     }
+
 }
